@@ -55,25 +55,21 @@ S9 = [
 (8) Y16 = L3 || R3
 '''
 
-def FI(value: int, key: dict) -> int:
-
+def FI(value: int, key: int) -> int:
     L0 = value >> 7              # 9 біт
     R0 = value & 0x7F            # 7 біт
 
-    KI_L = key >> 9               
-    KI_R = key & 0x1FF           
-
-   
-    R1 = S9[L0] ^ ((R0 <<2) & 0x1FF)
+    KI_L = key >> 9             
+    KI_R = key & 0x1FF          
+    R1 = S9[L0] ^ (R0)   
     L1 = R0
 
-    
-    R2 = S7[L1] ^ (R1 >> 2) ^ KI_L 
+    R2 = S7[L1] ^ (R1 & 0x7F) ^ KI_L 
     L2 = R1 ^ KI_R
-    R3 = S9[L2] ^ ((R2 << 2) & 0x1FF)
 
-    
+    R3 = S9[L2] ^ (R2) 
     L3 = R2
+
     return ((L3 << 9) | R3) & 0xFFFF
 
 """
@@ -116,7 +112,7 @@ def FL(value: int, k: int, key_data: dict) -> int:
     XR = value & 0xFFFF
     YR = (XL & KL_L)^XR
     YL = XL ^ (YR | KL_R)
-    return ((YL << 16) | YR) & 0xFFFFFFFF
+    return ((YL << 16) | YR) & 0xFFFFFFFF 
 
 '''
 (1) Y32 = YL || YR, KLi= KLiL || KLiR
